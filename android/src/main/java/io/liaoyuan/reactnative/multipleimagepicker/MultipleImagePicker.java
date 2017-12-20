@@ -90,7 +90,7 @@ public class MultipleImagePicker extends ReactContextBaseJavaModule {
                     List<MediaBean> list = imageMultipleResultEvent.getResult();
                     WritableArray paths = Arguments.createArray();
                     for (MediaBean bean : list) {
-                        String path = "file://" + bean.getOriginalPath();
+                        String path = bean.getOriginalPath();
                         paths.pushString(path);
                         MultipleImagePicker.this.assetsFromPath.put(path, bean);
                     }
