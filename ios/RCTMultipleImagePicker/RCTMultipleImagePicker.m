@@ -29,12 +29,13 @@ RCT_EXPORT_METHOD(launchImageGallery:(NSDictionary *)options resolver:(RCTPromis
     self.reject = reject;
     NSInteger maxImagesCount = [RCTConvert NSInteger:options[@"maxImagesCount"]];
     NSArray *selectedPaths = [RCTConvert NSArray:options[@"selectedPaths"]];
+    BOOL allowTakePhoto = [RCTConvert BOOL:options[@"allowTakePhoto"]];
+    
     NSMutableArray *selectedAssets = [[NSMutableArray alloc] init];
     [selectedPaths enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSString *path = [RCTConvert NSString:obj];
         [selectedAssets addObject:[self.assetsFromPath objectForKey:path]];
     }];
-    
   
     NSError * error = nil;
     
@@ -43,17 +44,18 @@ RCT_EXPORT_METHOD(launchImageGallery:(NSDictionary *)options resolver:(RCTPromis
           self.reject(@"camera_permission_not_granted", @"Camera permissions not granted", error);
           return;
         } else {
-          [self showImagePickerController:maxImagesCount selectedAssets:selectedAssets];
+            [self showImagePickerController:maxImagesCount selectedAssets:selectedAssets allowTakePhoto:allowTakePhoto];
         }
     }];
 }
 
 #pragma mark TZImagePickerControllerDelegate
 
-- (void)showImagePickerController:(NSInteger)maxImagesCount selectedAssets:(NSMutableArray *)selectedAssets {
+- (void)showImagePickerController:(NSInteger)maxImagesCount selectedAssets:(NSMutableArray *)selectedAssets allowTakePhoto:(BOOL)allowTakePhoto {
   TZImagePickerController *imagePickerController = [[TZImagePickerController alloc] initWithMaxImagesCount:maxImagesCount delegate:self];
   imagePickerController.allowPickingOriginalPhoto = NO;
   imagePickerController.allowPickingVideo = NO;
+    imagePickerController.allowTakePicture = allowTakePhoto;
   imagePickerController.selectedAssets = selectedAssets;
   dispatch_async(dispatch_get_main_queue(), ^{
     UIViewController *root = [[[[UIApplication sharedApplication] delegate] window] rootViewController];

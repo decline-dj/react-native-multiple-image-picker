@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 /**
  * Desction:文件夹信息
- * Author:pengjianbo
+ * Author:pengjianbo  Dujinyang
  * Date:16/6/9 下午2:47
  */
 public class BucketBean {
@@ -12,6 +12,8 @@ public class BucketBean {
     private String bucketName;
     private int imageCount;
     private String cover;
+    //图片方向
+    private int orientation;
 
     public String getBucketId() {
         return bucketId;
@@ -38,7 +40,7 @@ public class BucketBean {
     }
 
     public String getCover() {
-        if(cover == null){
+        if (cover == null) {
             return "";
         }
         return cover;
@@ -48,9 +50,17 @@ public class BucketBean {
         this.cover = cover;
     }
 
+    public int getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(int orientation) {
+        this.orientation = orientation;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if(o == null || !(o instanceof BucketBean)) {
+        if (o == null || !(o instanceof BucketBean)) {
             return false;
         }
         BucketBean bucketBean = (BucketBean) o;
